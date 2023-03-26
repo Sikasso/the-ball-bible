@@ -1,18 +1,20 @@
+// pages/index.js
+
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Header from '../components/Header';
-import { fetchNBAGames } from '../utils/api';
+import { fetchNbaGames } from '../utils/api';
 
 const HomePage = () => {
-  const [nbaGames, setNBAGames] = useState([]);
+  const [nbaGames, setNbaGames] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const games = await fetchNBAGames();
-        setNBAGames(games);
+        const games = await fetchNbaGames();
+        setNbaGames(games);
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch NBA games:', error);
@@ -26,10 +28,8 @@ const HomePage = () => {
   const renderGames = () => {
     return nbaGames.map((game) => (
       <div key={game.id} className={styles.game}>
-        <h2>{game.homeTeam.name} vs. {game.awayTeam.name}</h2>
-        <p>Date: {game.date}</p>
-        <p>Spread: {game.spread}</p>
-        <p>Over/Under: {game.overUnder}</p>
+        <h2>{game.home_team} vs. {game.away_team}</h2>
+        <p>Date: {game.start_time}</p>
         {/* Add more game properties if needed */}
       </div>
     ));
