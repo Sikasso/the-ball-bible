@@ -24,5 +24,12 @@ const GameItem = ({ game }) => {
       <Dropdown options={options} onChange={handleStatSelect} placeholder="Select a Stat" />
       {selectedStat && (
         <div>
-          <p>{game.team1}: {game[selectedStat].team1}</p>
-          <p>{game.team2}: {game[selectedStat].team2}</p
+          <p>{game.team1}: {game.stats[selectedStat].team1}</p>
+          <p>{game.team2}: {game.stats[selectedStat].team2}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default GameItem;
