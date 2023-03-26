@@ -1,7 +1,7 @@
 // components/GamesList.js
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import GameItem from './GameItem';
+import { fetchNbaGames } from '../utils/api';
 
 const GamesList = () => {
   const [games, setGames] = useState([]);
@@ -12,9 +12,9 @@ const GamesList = () => {
 
   const fetchGames = async () => {
     try {
-      // Replace the following URL with the actual API endpoint
-      const response = await axios.get('https://api.example.com/nba/games');
-      setGames(response.data.games);
+      const today = new Date().toISOString().split('T')[0];
+      const fetchedGames = await fetchNbaGames(today);
+      setGames(fetchedGames);
     } catch (error) {
       console.error('Error fetching games:', error);
     }

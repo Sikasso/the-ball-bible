@@ -1,33 +1,36 @@
 // components/GameItem.js
-import React, { useState } from 'react';
-import Dropdown from 'react-dropdown';
-import 'react-dropdown/style.css';
+import React, { useEffect, useState } from 'react';
+import { fetchBettingOdds } from '../utils/api';
 
 const GameItem = ({ game }) => {
-  const [selectedStat, setSelectedStat] = useState('');
+  const [bettingOdds, setBettingOdds] = useState(null);
 
-  const handleStatSelect = (option) => {
-    setSelectedStat(option.value);
-  };
-
-  const options = [
-    { value: 'ppg', label: 'PPG (Past 10 Games)' },
-    { value: 'fg%', label: 'FG% (Past 5 Games)' },
-  ];
+  useEffect(() => {
+    const fetchOdds = async () => {
+      try {
+        const odds = await fetchBettingOdds(game.id);
+        setBettingOdds(odds);
+      } catch (error) {
+        console.error('Error fetching betting odds:', error);
+      }
+    };
+    fetchOdds();
+  }, [game.id]);
 
   return (
     <div>
-      <h2>
-        {game.team1} vs {game.team2}
-      </h2>
-      <h3>Odds: {game.odds}</h3>
-      <Dropdown options={options} onChange={handleStatSelect} placeholder="Select a Stat" />
-      {selectedStat && (
-        <div>
-          <p>{game.team1}: {game.stats[selectedStat].team1}</p>
-          <p>{game.team2}: {game.stats[selectedStat].team2}</p>
-        </div>
-      )}
+      <h3>{game.title}</h3>
+      {
+  bettingOdds &&
+    Object.keys(bettingOdds).map((key) => (
+      <div key={key}>
+        <p>
+          {key}: {bettingOdds[key]}
+        </p>
+      </div>
+    ));
+}
+
     </div>
   );
 };
