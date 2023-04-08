@@ -1,36 +1,22 @@
-// components/GameItem.js
-import React, { useEffect, useState } from 'react';
-import { fetchBettingOdds } from '../utils/api';
+import React, { useState } from 'react';
+import GameStats from './GameStats';
 
 const GameItem = ({ game }) => {
-  const [bettingOdds, setBettingOdds] = useState(null);
+  const [showStats, setShowStats] = useState(false);
 
-  useEffect(() => {
-    const fetchOdds = async () => {
-      try {
-        const odds = await fetchBettingOdds(game.id);
-        setBettingOdds(odds);
-      } catch (error) {
-        console.error('Error fetching betting odds:', error);
-      }
-    };
-    fetchOdds();
-  }, [game.id]);
+  const handleClick = () => {
+    setShowStats(!showStats);
+  };
 
   return (
-    <div>
-      <h3>{game.title}</h3>
-      {
-  bettingOdds &&
-    Object.keys(bettingOdds).map((key) => (
-      <div key={key}>
-        <p>
-          {key}: {bettingOdds[key]}
-        </p>
-      </div>
-    ));
-}
-
+    <div className="game-item" onClick={handleClick}>
+      <h3>{game.home_team} vs {game.away_team}</h3>
+      {showStats && <GameStats homeTeamId={game.home_team_id} awayTeamId={game.away_team_id} />}
+      <style jsx>{`
+        .game-item {
+          cursor: pointer;
+        }
+      `}</style>
     </div>
   );
 };

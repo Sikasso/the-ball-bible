@@ -8,3 +8,9 @@ export async function fetchNbaGames(date) {
   const data = await response.json();
   return data;
 }
+
+export async function fetchTeamStatsById(teamId) {
+  const response = await axios.get(`https://www.balldontlie.io/api/v1/teams/${teamId}`);
+  return response.data;
+}
+
